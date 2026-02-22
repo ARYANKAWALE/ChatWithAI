@@ -1,8 +1,12 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { dummyUserData, dummyChats } from "../assets/assets";
 
 export const AppContext = createContext();
+
+export const useAppContext = () => {
+  return useContext(AppContext);
+};
 
 export const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
@@ -51,7 +55,7 @@ export const AppContextProvider = ({ children }) => {
     selectedChat,
     setSelectedChat,
     theme,
-    setTheme
+    setTheme,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

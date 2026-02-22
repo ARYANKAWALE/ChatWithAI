@@ -9,7 +9,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
   const [search, setSearch] = useState("");
   return (
     <div
-      className={`flex flex-col h-screen min-w-[280px] w-72 p-5 bg-white dark:bg-[#0A0A0A] border-r border-gray-200 dark:border-white/5 transition-all duration-500 max-md:absolute left-0 top-0 z-10 ${isMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"}`}
+      className={`sticky top-0 flex flex-col h-screen min-w-[280px] w-72 p-5 bg-white dark:bg-[#0A0A0A] border-r border-gray-200 dark:border-white/5 transition-all duration-500 max-md:fixed left-0 top-0 z-10 ${isMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"}`}
     >
       <img
         src={theme === "dark" ? assets.logo_full : assets.logo_full_dark}
@@ -25,8 +25,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
       <div className="flex items-center gap-2 p-3 mt-5 border border-gray-300 dark:border-white/10 dark:bg-[#141414] rounded-xl focus-within:border-gray-400 dark:focus-within:border-white/20 transition-all">
         <img
           src={assets.search_icon}
-          className="w-4"
-          style={{ filter: theme === "dark" ? "invert(0.6)" : "none" }}
+          className="w-4 opacity-60 not-dark:invert"
         />
         <input
           onChange={(e) => setSearch(e.target.value)}
