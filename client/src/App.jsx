@@ -7,8 +7,11 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { assets } from "./assets/assets";
 import { useState } from "react";
 import "./assets/prism.css";
+import { useAppContext } from "./context/AppContext";
+import Login from "./pages/Login";
 
 const App = () => {
+  const {user} = useAppContext()
   const [isMenuOpen, setIsMeuOpen] = useState(false);
   const {pathname} = useLocation()
 
@@ -23,7 +26,8 @@ const App = () => {
           onClick={() => setIsMeuOpen(true)}
         />
       )}
-      <div className="bg-white dark:bg-[#000000] dark:text-white">
+      {user ? (
+        <div className="bg-white dark:bg-[#000000] dark:text-white">
         <div className="flex h-screen w-screen">
           <Sidebar isMenuOpen={isMenuOpen} setIsMeuOpen={setIsMeuOpen} />
           <Routes>
@@ -34,6 +38,11 @@ const App = () => {
           </Routes>
         </div>
       </div>
+      ):(
+      <div className="bg-gradient-to-b from-[#2421244] to-[#000000] dark:bg-[#000000] flex items-center justify-center h-screen w-screen">
+        <Login/>
+      </div>
+      )}
     </>
   );
 };
