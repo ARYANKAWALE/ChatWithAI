@@ -4,6 +4,7 @@ import cors from "cors"
 import connectDB from "./Configs/db.js"
 import userRouter from './routes/userRoutes.js'
 import chatRouter from './routes/chatRoutes.js'
+import messageRouter from './routes/messageRoutes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -16,6 +17,7 @@ app.use(express.json())
 app.get('/', (req, res) => res.send("Server is running!"))
 app.use('/api/user', userRouter)
 app.use('/api/chat',chatRouter)
+app.use('/api/message',messageRouter)
 
 // Database Connection then Server Start
 const startServer = async () => {
