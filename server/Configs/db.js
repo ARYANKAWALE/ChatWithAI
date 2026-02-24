@@ -2,12 +2,13 @@ import mongoose from 'mongoose'
 
 const connectDB = async () => {
     try {
-        mongoose.connection.on('connected', () => {
-            console.log('Database connected')
+        await mongoose.connect(`${process.env.MONGO_URI}/quickgpt`, {
+            serverSelectionTimeoutMS: 5000 
         })
-        await mongoose.connect(`${process.env.MONGO_URI}/quickgpt`)
+        console.log('Database connected successfully')
     } catch (error) {
-        console.log(error.message)
+        console.error('Database connection error:', error.message)
+        process.exit(1)
     }
 }
 
