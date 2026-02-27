@@ -1,8 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { dummyPlans } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
 import Loading from "./Loading";
 
+const buyCredits = async (planId, fetchUser) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Please login to purchase credits. ⚠️");
+    return;
+  }
+
+  try {
+    // backend se order create
+    const res = await fetch("http://localhost:3000/api/credit/purchase", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ planId }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert(data.message || "Failed to initiate purchase ❌");
+      return;
+    }
+
+    // Razorpay popup options
+    const options = {
+      key: rzp_test_SKhwF0mpn95N5H,
+      amount: data.order.amount,
+      currency: "INR",
+      name: "AI Agent",
+      description: "Buy Credits",
+      order_id: data.order.id,
+
+      handler: async function (response) {
+        try {
+          const verifyRes = await fetch(
+            "http://localhost:3000/api/credit/verify",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+              },
+              body: JSON.stringify(response),
+            },
+          );
+
+          const verifyData = await verifyRes.json();
+
+          if (verifyData.success) {
+            alert("Payment Successful 🎉");
+            fetchUser();
+          } else {
+            alert(verifyData.message || "Payment verification failed ❌");
+          }
+        } catch (error) {
+          console.error(error);
+          alert("Payment verification error ❌");
+        }
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  } catch (error) {
+    console.error(error);
+    alert("An error occurred during purchase ❌");
+  }
+};
+
 const Credits = () => {
+  const { fetchUser } = useAppContext();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +117,12 @@ const Credits = () => {
                 ))}
               </ul>
             </div>
-            <button className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer">Buy Now</button>
+            <button
+              onClick={() => buyCredits(plan._id, fetchUser)}
+              className="mt-6 bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 rounded transition-colors cursor-pointer"
+            >
+              Buy Now
+            </button>
           </div>
         ))}
       </div>

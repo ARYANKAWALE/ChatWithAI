@@ -16,7 +16,29 @@ export const AppContextProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   const fetchUser = async () => {
-    setUser(dummyUserData);
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const res = await fetch("http://localhost:3000/api/user/data", {
+          headers: {
+            Authorization: token,
+          },
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          setUser(data.user);
+        } else {
+          // Token might be invalid or expired
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    } else {
+      setUser(null);
+    }
   };
 
   const fetchUsersChats = async () => {

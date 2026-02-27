@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
 const login = () => {
   const [state, setState] = useState("login");
@@ -6,12 +7,44 @@ const login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) =>{
+  const { fetchUser } = useAppContext();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  }
+
+    try {
+      const endpoint =
+        state === "login" ? "/api/user/login" : "/api/user/register";
+      const body =
+        state === "login" ? { email, password } : { name, email, password };
+
+      const res = await fetch(`http://localhost:3000${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        localStorage.setItem("token", data.token);
+        fetchUser(); // This will trigger the App component to show the main layout
+      } else {
+        alert(data.message || "Authentication failed ❌");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred during authentication ❌");
+    }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white"
+    >
       <p className="text-2xl font-medium m-auto">
         <span className="text-purple-700">User</span>{" "}
         {state === "login" ? "Login" : "Sign Up"}
@@ -72,7 +105,10 @@ const login = () => {
           </span>
         </p>
       )}
-      <button type="submit" className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-md cursor-pointer">
+      <button
+        type="submit"
+        className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-md cursor-pointer"
+      >
         {state === "register" ? "Create Account" : "Login"}
       </button>
     </form>
