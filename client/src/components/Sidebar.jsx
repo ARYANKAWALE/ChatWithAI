@@ -2,11 +2,52 @@ import { assets } from "../assets/assets";
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import moment from "moment";
+import toast from "react-hot-toast";
 
 const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
-  const { chats, setSelectedChat, theme, setTheme, user, navigate } =
-    useContext(AppContext);
+  const {
+    chats,
+    setSelectedChat,
+    theme,
+    setTheme,
+    user,
+    navigate,
+    createNewChat,
+    axios,
+    setChats,
+    fetchUsersChats,
+    setToken,
+    token,
+  } = useContext(AppContext);
   const [search, setSearch] = useState("");
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    toast.success("Logged out successfully");
+  };
+  const deleteChat = async (e, chatId) => {
+    try {
+      e.stopPropagation();
+      const confirm = window.confirm(
+        "Are you sure you want to delete this chat?",
+      );
+      if (!confirm) return;
+      const { data } = await axios.delete("/api/chat/delete", {
+        data: { chatId },
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (data.success) {
+        setChats((prev) => prev.filter((chat) => chat._id !== chatId));
+        await fetchUsersChats();
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div
       className={`sticky top-0 flex flex-col h-screen min-w-[280px] w-72 p-5 bg-white dark:bg-[#0A0A0A] border-r border-gray-200 dark:border-white/5 transition-all duration-500 max-md:fixed left-0 top-0 z-10 ${isMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"}`}
@@ -17,7 +58,10 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
         className="w-full max-w-48 mb-2"
       />
 
-      <button className="flex justify-center items-center w-full py-2.5 mt-6 text-white bg-gradient-to-r from-[#9F5BFF] to-[#3B82F6] rounded-xl cursor-pointer hover:opacity-90 transition-opacity font-medium shadow-lg shadow-purple-500/20">
+      <button
+        onClick={createNewChat}
+        className="flex justify-center items-center w-full py-2.5 mt-6 text-white bg-gradient-to-r from-[#9F5BFF] to-[#3B82F6] rounded-xl cursor-pointer hover:opacity-90 transition-opacity font-medium shadow-lg shadow-purple-500/20"
+      >
         <span className="mr-2 text-xl">+</span> New Chat
       </button>
 
@@ -25,7 +69,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
       <div className="flex items-center gap-2 p-3 mt-5 border border-gray-300 dark:border-white/10 dark:bg-[#141414] rounded-xl focus-within:border-gray-400 dark:focus-within:border-white/20 transition-all">
         <img
           src={assets.search_icon}
-          className="w-4 opacity-60 not-dark:invert"
+          className="w-4 opacity-60   not-dark:invert"
         />
         <input
           onChange={(e) => setSearch(e.target.value)}
@@ -74,6 +118,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
               <img
                 src={assets.bin_icon}
                 className="hidden group-hover:block w-4 h-4 mt-1 ml-2 opacity-60 hover:opacity-100 cursor-pointer not-dark:invert transition-opacity shrink-0"
+                onClick={(e) => deleteChat(e, chat._id)}
               />
             </div>
           ))}
@@ -144,6 +189,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
         </p>
         {user && (
           <img
+            onClick={logout}
             src={assets.logout_icon}
             className="h-5 cursor-pointer hidden not-dark:invert group-hover:block"
           />

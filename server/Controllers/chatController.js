@@ -8,7 +8,7 @@ export const createdChat = async (req,res)=>{
             userId,
             messages:[],
             name: "New Chat",
-            username:req.user.name
+            userName:req.user.name
         }
         await Chat.create(chatData)
         res.status(200).json({success:true,message:"Chat created successfully"})

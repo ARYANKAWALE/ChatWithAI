@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useAppContext } from "../context/AppContext";
+import toast from "react-hot-toast";
 
 const login = () => {
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { fetchUser } = useAppContext();
+  const { axios, setToken, fetchUser } = useAppContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,25 +18,17 @@ const login = () => {
       const body =
         state === "login" ? { email, password } : { name, email, password };
 
-      const res = await fetch(`http://localhost:3000${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      const data = await res.json();
+      const { data } = await axios.post(endpoint, body);
 
       if (data.success) {
         localStorage.setItem("token", data.token);
-        fetchUser(); // This will trigger the App component to show the main layout
+        setToken(data.token); // ✅ Update context so fetchUser fires with the correct token
       } else {
-        alert(data.message || "Authentication failed ❌");
+        toast.error(data.message || "Authentication failed ❌");
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred during authentication ❌");
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 

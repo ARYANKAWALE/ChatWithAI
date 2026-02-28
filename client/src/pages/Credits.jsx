@@ -30,7 +30,7 @@ const buyCredits = async (planId, fetchUser) => {
 
     // Razorpay popup options
     const options = {
-      key: rzp_test_SKhwF0mpn95N5H,
+      key: "rzp_test_SKhwF0mpn95N5H",
       amount: data.order.amount,
       currency: "INR",
       name: "AI Agent",
@@ -78,11 +78,45 @@ const Credits = () => {
   const { fetchUser } = useAppContext();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { axios ,token} = useAppContext()
 
   const fetchPlans = async () => {
-    setPlans(dummyPlans);
-    setLoading(false);
+    try {
+      const { data } = await axios.get('/api/credit/plans',{
+        headers:{
+          Authorization:token
+        }
+      })
+      if (data.success) {
+        setPlans(data.plans)
+      } else {
+        toast.error(data.message || 'Failed to fetch plans.')
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+      setLoading(false)
   };
+
+  const purchasePlan = async (planId) =>{
+    try {
+      const { data } = await axios.post('/api/credit/purchase',{
+        planId
+      },{
+        headers:{
+          Authorization:token
+        }
+      })
+      if (data.success) {
+        toast.success(data.message)
+        fetchUser()
+      } else {
+        toast.error(data.message || 'Failed to purchase plan.')
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
 
   useEffect(() => {
     fetchPlans();
@@ -106,7 +140,7 @@ const Credits = () => {
                 {plan.name}
               </h3>
               <p className="text-2xl font-bold text-purple-600 dark:text-purple-300 mb-4">
-                ${plan.price}
+                ₹{plan.price}
                 <span className="text-base font-normal text-gray-600 dark:text-purple-200">
                   {""}/ {plan.credits} credits
                 </span>

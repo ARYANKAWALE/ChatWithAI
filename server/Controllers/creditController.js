@@ -1,13 +1,12 @@
 import { Transaction } from "../models/transaction.js";
 import { User } from "../models/User.js";
 import Razorpay from "razorpay";
-import crypto from "crypto";
 
 const plans = [
   {
     _id: "basic",
     name: "Basic",
-    price: 10,
+    price: 99,
     credits: 100,
     features: [
       "100 text generations",
@@ -19,7 +18,7 @@ const plans = [
   {
     _id: "pro",
     name: "Pro",
-    price: 20,
+    price: 199,
     credits: 500,
     features: [
       "500 text generations",
@@ -32,7 +31,7 @@ const plans = [
   {
     _id: "premium",
     name: "Premium",
-    price: 30,
+    price: 299,
     credits: 1000,
     features: [
       "1000 text generations",

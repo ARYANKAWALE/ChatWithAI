@@ -17,7 +17,7 @@ export const textMessageController = async (req, res) => {
     }
     const { chatId, prompt } = req.body;
 
-    const chat = await Chat.findById({ userId, _id: chatId });
+    const chat = await Chat.findOne({ userId, _id: chatId });
     chat.messages.push({
       role: "user",
       content: prompt,

@@ -58,21 +58,21 @@ export const dummyPlans = [
     {
         _id: "basic",
         name: "Basic",
-        price: 10,
+        price: 99,
         credits: 100,
         features: ['100 text generations', '50 image generations', 'Standard support', 'Access to basic models']
     },
     {
         _id: "pro",
         name: "Pro",
-        price: 20,
+        price: 199,
         credits: 500,
         features: ['500 text generations', '200 image generations', 'Priority support', 'Access to pro models', 'Faster response time']
     },
     {
         _id: "premium",
         name: "Premium",
-        price: 30,
+        price: 299,
         credits: 1000,
         features: ['1000 text generations', '500 image generations', '24/7 VIP support', 'Access to premium models', 'Dedicated account manager']
     }
@@ -83,7 +83,7 @@ export const dummyChats = [
     {
         "_id": "689de4bbaa932dc3a8ef6cd7",
         "userId": "689c6deed410acddc0d95a0e",
-        "userName": "GreatStack",
+        "userName": "User",
         "name": "New Chat",
         "messages": [
             {
@@ -267,13 +267,13 @@ export const dummyChats = [
         ],
         "createdAt": "2025-08-13T17:29:52.421Z",
         "updatedAt": "2025-08-14T09:39:19.046Z",
-        "userName": "GreatStack"
+        "userName": "User"
     },
     {
         "_id": Date.now(),
         "userId": "gs123456789",
         "name": "New Chat",
-        "userName": "GreatStack",
+        "userName": "User",
         "messages": [],
         "createdAt": "2025-08-13T17:29:52.421Z",
         "updatedAt": "2025-08-14T09:39:19.046Z",
