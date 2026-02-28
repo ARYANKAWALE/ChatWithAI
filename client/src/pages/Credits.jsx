@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { dummyPlans } from "../assets/assets";
 import { useAppContext } from "../context/AppContext";
 import Loading from "./Loading";
+import toast from "react-hot-toast";
 
 const buyCredits = async (planId, fetchUser) => {
   const token = localStorage.getItem("token");
@@ -78,45 +78,50 @@ const Credits = () => {
   const { fetchUser } = useAppContext();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { axios ,token} = useAppContext()
+  const { axios, token } = useAppContext();
 
   const fetchPlans = async () => {
     try {
-      const { data } = await axios.get('/api/credit/plans',{
-        headers:{
-          Authorization:token
-        }
-      })
+      const { data } = await axios.get("/api/credit/plan", {
+        headers: {
+          Authorization: token,
+        },
+      });
       if (data.success) {
-        setPlans(data.plans)
+        setPlans(data.plans);
       } else {
-        toast.error(data.message || 'Failed to fetch plans.')
+        toast.error(data.message || "Failed to fetch plans.");
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
-      setLoading(false)
   };
 
-  const purchasePlan = async (planId) =>{
+  const purchasePlan = async (planId) => {
     try {
-      const { data } = await axios.post('/api/credit/purchase',{
-        planId
-      },{
-        headers:{
-          Authorization:token
-        }
-      })
+      const { data } = await axios.post(
+        "/api/credit/purchase",
+        {
+          planId,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
       if (data.success) {
-        toast.success(data.message)
-        fetchUser()
+        toast.success(data.message);
+        fetchUser();
       } else {
-        toast.error(data.message || 'Failed to purchase plan.')
+        toast.error(data.message || "Failed to purchase plan.");
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPlans();
