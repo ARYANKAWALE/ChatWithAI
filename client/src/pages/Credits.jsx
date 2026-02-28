@@ -12,14 +12,17 @@ const buyCredits = async (planId, fetchUser) => {
 
   try {
     // backend se order create
-    const res = await fetch("http://localhost:3000/api/credit/purchase", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
+    const res = await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/api/credit/purchase`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify({ planId }),
       },
-      body: JSON.stringify({ planId }),
-    });
+    );
 
     const data = await res.json();
 
@@ -40,7 +43,7 @@ const buyCredits = async (planId, fetchUser) => {
       handler: async function (response) {
         try {
           const verifyRes = await fetch(
-            "http://localhost:3000/api/credit/verify",
+            `${import.meta.env.VITE_SERVER_URL}/api/credit/verify`,
             {
               method: "POST",
               headers: {
