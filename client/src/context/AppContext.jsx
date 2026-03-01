@@ -88,7 +88,7 @@ export const AppContextProvider = ({ children }) => {
       setChats([]);
       setSelectedChat(null);
     }
-  }, [user]);
+  }, [user?._id]);
 
   useEffect(() => {
     if (theme === "dark") {

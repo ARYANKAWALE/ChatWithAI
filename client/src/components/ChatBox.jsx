@@ -5,7 +5,8 @@ import Message from "./Message";
 import toast from "react-hot-toast";
 const ChatBox = () => {
   const containerRef = useRef(null);
-  const { selectedChat, theme, user, setUser, axios, token } = useAppContext();
+  const { selectedChat, setSelectedChat, theme, user, setUser, axios, token } =
+    useAppContext();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +41,18 @@ const ChatBox = () => {
         },
       );
       if (data.success) {
+        const userMsg = {
+          role: "user",
+          content: promptCopy,
+          timestamp: new Date(),
+          isImage: false,
+        };
         setMessages((prev) => [...prev, data.reply]);
+        // Keep selectedChat in sync so the useEffect doesn't overwrite local messages
+        setSelectedChat((prev) => ({
+          ...prev,
+          messages: [...prev.messages, userMsg, data.reply],
+        }));
         if (mode === "image") {
           setUser((prev) => ({ ...prev, credits: prev.credits - 2 }));
         } else {
