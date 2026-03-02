@@ -103,7 +103,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
                 setSelectedChat(chat);
                 setIsMeuOpen(false);
               }}
-              className="p-3 dark:bg-[#141414] hover:dark:bg-[#1A1A1A] border border-transparent dark:border-white/5 rounded-xl flex justify-between group cursor-pointer transition-colors"
+              className="p-3 dark:bg-[#141414] hover:dark:bg-[#1A1A1A] border border-transparent dark:border-white/5 rounded-xl flex justify-between items-center group cursor-pointer transition-colors"
             >
               <div className="flex flex-col overflow-hidden w-full">
                 <p className="truncate w-full text-sm font-medium text-gray-900 dark:text-gray-200">
@@ -117,7 +117,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
               </div>
               <img
                 src={assets.bin_icon}
-                className="hidden group-hover:block w-4 h-4 mt-1 ml-2 opacity-60 hover:opacity-100 cursor-pointer not-dark:invert transition-opacity shrink-0"
+                className="block md:hidden md:group-hover:block w-4 h-4 opacity-60 hover:opacity-100 cursor-pointer not-dark:invert transition-opacity shrink-0"
                 onClick={(e) => deleteChat(e, chat._id)}
               />
             </div>
@@ -191,11 +191,11 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
           <img
             onClick={logout}
             src={assets.logout_icon}
-            className="h-5 cursor-pointer hidden not-dark:invert group-hover:block"
+            className="h-5 cursor-pointer not-dark:invert block md:hidden md:group-hover:block"
           />
         )}
       </div>
-      {/* </div> */}
+
       <img
         onClick={() => {
           setIsMeuOpen(false);

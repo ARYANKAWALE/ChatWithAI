@@ -28,7 +28,7 @@ const Message = ({ message }) => {
           />
         </div>
       ) : (
-        <div className="inline-flex flex-col gap-2 p-2 px-4 max-w-2xl bg-primary/20 dark:bg-[#5317C]/30 border border-[#80609F]/30 rounded-md my-4">
+        <div className="inline-flex flex-col gap-2 p-2 px-4 max-w-2xl bg-primary/20 dark:bg-[#282a2c] border border-[#80609F]/30 rounded-md my-4">
           {message.isImage ? (
             <img
               src={message.content}
@@ -36,11 +36,11 @@ const Message = ({ message }) => {
               className="w-full max-w-md mt-2 rounded-md"
             />
           ) : (
-            <div className="text-sm dark:text-primary reset-tw">
+            <div className="text-sm reset-tw">
               <Markdown>{message.content}</Markdown>
             </div>
           )}
-          <span className="text-xs text-gray-400 dark:text-[#B1A6C0]">
+          <span className="text-xs text-gray-400">
             {moment(message.timestamp).fromNow()}
           </span>
         </div>
