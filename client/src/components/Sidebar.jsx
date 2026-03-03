@@ -60,7 +60,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
 
       <button
         onClick={createNewChat}
-        className="flex justify-center items-center w-full py-2.5 mt-6 text-white bg-gradient-to-r from-[#9F5BFF] to-[#3B82F6] rounded-xl cursor-pointer hover:opacity-90 transition-opacity font-medium shadow-lg shadow-purple-500/20"
+        className="flex justify-center items-center w-full py-2.5 mt-6 text-white bg-[#b49f18] rounded-xl cursor-pointer hover:opacity-90 transition-opacity font-medium shadow-lg shadow-yellow-500/20"
       >
         <span className="mr-2 text-xl">+</span> New Chat
       </button>
@@ -177,14 +177,14 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
             className="sr-only peer"
             checked={theme === "dark"}
           />
-          <div className="w-8 h-4 bg-gray-300 dark:bg-[#202020] rounded-full peer-checked:bg-gradient-to-r peer-checked:from-[#9F5BFF] peer-checked:to-[#3B82F6] transition-all"></div>
+          <div className="w-8 h-4 bg-gray-300 dark:bg-[#202020] rounded-full peer-checked:bg-gradient-to-r peer-checked:from-[#d0b611] peer-checked:to-[#d0b611] transition-all"></div>
           <span className="absolute left-[2px] top-[2px] w-3 h-3 bg-white rounded-full transition-all peer-checked:translate-x-4 shadow pointer-events-none"></span>
         </label>
       </div>
       {/* User Account */}
       <div className="flex items-center gap-3 p-3 mt-4  dark:bg-transparent hover:dark:bg-[#141414] rounded-xl cursor-pointer group">
         <img src={assets.user_icon} className="w-7 rounded-full" />
-        <p className="flex-1 text-sm dark:text-primary truncate">
+        <p className="flex-1 text-sm  truncate">
           {user ? user.name : "Login your account"}
         </p>
         {user && (

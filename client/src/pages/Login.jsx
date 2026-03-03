@@ -38,7 +38,7 @@ const login = () => {
       className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] text-gray-500 rounded-lg shadow-xl border border-gray-200 bg-white"
     >
       <p className="text-2xl font-medium m-auto">
-        <span className="text-purple-700">User</span>{" "}
+        <span className="text-[#d0b611]">User</span>{" "}
         {state === "login" ? "Login" : "Sign Up"}
       </p>
       {state === "register" && (
@@ -48,7 +48,7 @@ const login = () => {
             onChange={(e) => setName(e.target.value)}
             value={name}
             placeholder="type here"
-            className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700"
+            className="border border-gray-200 rounded w-full p-2 mt-1 outline-[#d0b611]"
             type="text"
             required
           />
@@ -60,7 +60,7 @@ const login = () => {
           onChange={(e) => setEmail(e.target.value)}
           value={email}
           placeholder="type here"
-          className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700"
+          className="border border-gray-200 rounded w-full p-2 mt-1 outline-[#d0b611]"
           type="email"
           required
         />
@@ -71,7 +71,7 @@ const login = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
           placeholder="type here"
-          className="border border-gray-200 rounded w-full p-2 mt-1 outline-purple-700"
+          className="border border-gray-200 rounded w-full p-2 mt-1 outline-[#d0b611]"
           type="password"
           required
         />
@@ -81,7 +81,7 @@ const login = () => {
           Already have account?{" "}
           <span
             onClick={() => setState("login")}
-            className="text-purple-700 cursor-pointer"
+            className="text-[#d0b611] cursor-pointer"
           >
             click here
           </span>
@@ -91,7 +91,7 @@ const login = () => {
           Create an account?{" "}
           <span
             onClick={() => setState("register")}
-            className="text-purple-700 cursor-pointer"
+            className="text-[#d0b611] cursor-pointer"
           >
             click here
           </span>
@@ -99,7 +99,7 @@ const login = () => {
       )}
       <button
         type="submit"
-        className="bg-purple-700 hover:bg-purple-800 transition-all text-white w-full py-2 rounded-md cursor-pointer"
+        className="bg-[#d0b611] hover:bg-[#b89a0d] transition-all text-white w-full py-2 rounded-md cursor-pointer"
       >
         {state === "register" ? "Create Account" : "Login"}
       </button>

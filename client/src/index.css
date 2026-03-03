@@ -8,21 +8,20 @@
 }
 
 @theme {
-  --color-primary: #e6ccff;
+  --color-primary: #d0b611;
 }
 ::-webkit-scrollbar {
   display: none;
 }
 
-.reset-tw :not(pre):not(code){
+.reset-tw :not(pre):not(code) {
   all: revert;
 }
 
-
-.loader div:nth-child(2){
+.loader div:nth-child(2) {
   animation-delay: 0.2s;
 }
 
-.loader div:nth-child(3){
+.loader div:nth-child(3) {
   animation-delay: 0.4s;
 }

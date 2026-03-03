@@ -1,19 +1,9 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const Loading = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      navigate("/");
-    }, 8000);
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
-    <div className="bg-[#2E2D2D] backdrop-opacity-60 flex items-center justify-center h-screen w-screen text-white text-2xl">
-      <div className="w-10 h-10 rounded-full border-3 border-white border-t-transparent animate-spin"></div>
+    <div className="bg-white dark:bg-[#2E2D2D] backdrop-opacity-60 flex items-center justify-center h-screen w-screen text-gray-800 dark:text-white text-2xl">
+      <div className="w-10 h-10 rounded-full border-3 border-[#d0b611] border-t-transparent animate-spin"></div>
     </div>
   );
 };

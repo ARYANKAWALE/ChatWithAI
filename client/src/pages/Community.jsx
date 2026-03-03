@@ -7,20 +7,20 @@ import toast from "react-hot-toast";
 const Community = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { axios } = useAppContext()
+  const { axios } = useAppContext();
 
   const fetchImages = async () => {
     try {
-      const { data } = await axios.get('/api/user/published-images')
+      const { data } = await axios.get("/api/user/published-images");
       if (data.success) {
-        setImages(data.images)
+        setImages(data.images);
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
     }
-      setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Community = () => {
 
   return (
     <div className="p-6 pt-12 xl:px-12 2xl:px-[10%] w-full mx-auto h-full overflow-y-scroll">
-      <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-purple-100">
+      <h2 className="text-xl font-semibold mb-6 text-gray-800 dark:text-yellow-100">
         Community Images
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">

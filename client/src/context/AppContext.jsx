@@ -62,18 +62,18 @@ export const AppContextProvider = ({ children }) => {
         return;
       }
 
-      setChats(data.chats);
-
       if (data.chats.length === 0) {
-        await createNewChat();
-
-        const { data: newData } = await axios.get("/api/chat/get", {
+        // Create a new chat and use the returned chat directly
+        const { data: createData } = await axios.get("/api/chat/create", {
           headers: { Authorization: token },
         });
 
-        setChats(newData.chats);
-        setSelectedChat(newData.chats[0]);
+        if (createData.success && createData.chat) {
+          setChats([createData.chat]);
+          setSelectedChat(createData.chat);
+        }
       } else {
+        setChats(data.chats);
         setSelectedChat(data.chats[0]);
       }
     } catch (error) {
