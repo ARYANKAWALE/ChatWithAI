@@ -20,16 +20,25 @@ const App = () => {
 
   return (
     <>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            borderRadius: "12px",
+            background: "#111b21",
+            color: "#e9edef",
+            border: "1px solid rgba(37, 211, 102, 0.2)",
+          },
+        }}
+      />
       {!isMenuOpen && (
         <img
           src={assets.menu_icon}
-          className="absolute top-3 left-3 w-8 h-8 cursor-pointer md:hidden not-dark:invert"
+          className="absolute top-4 left-4 w-7 h-7 cursor-pointer md:hidden not-dark:invert z-20 hover:opacity-80 transition-opacity"
           onClick={() => setIsMeuOpen(true)}
         />
       )}
       {user ? (
-        <div className="bg-white dark:bg-[#000000] dark:text-white">
+        <div className="bg-chat-light dark:bg-chat-dark dark:text-white transition-colors duration-300">
           <div className="flex h-screen w-screen">
             <Sidebar isMenuOpen={isMenuOpen} setIsMeuOpen={setIsMeuOpen} />
             <Routes>
@@ -41,7 +50,7 @@ const App = () => {
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-b from-[#f5f5f0] to-[#e8e8e0] dark:from-[#1a1a1a] dark:to-[#000000] flex items-center justify-center h-screen w-screen">
+        <div className="bg-gradient-to-br from-primary-darker via-primary-dark to-primary-darker dark:from-[#0b141a] dark:via-[#111b21] dark:to-[#0b141a] flex items-center justify-center h-screen w-screen">
           <Login />
         </div>
       )}

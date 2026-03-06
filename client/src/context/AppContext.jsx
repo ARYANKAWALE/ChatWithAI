@@ -18,6 +18,7 @@ export const AppContextProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [loadingUser, setLoadingUser] = useState(true);
+  const [loadingChats, setLoadingChats] = useState(false);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   const fetchUser = async () => {
@@ -52,8 +53,34 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
+  const renameChat = async (chatId, newName) => {
+    try {
+      const { data } = await axios.put(
+        "/api/chat/rename",
+        { chatId, name: newName },
+        { headers: { Authorization: token } },
+      );
+      if (data.success) {
+        setChats((prev) =>
+          prev.map((chat) =>
+            chat._id === chatId ? { ...chat, name: newName } : chat,
+          ),
+        );
+        if (selectedChat?._id === chatId) {
+          setSelectedChat((prev) => ({ ...prev, name: newName }));
+        }
+        toast.success("Chat renamed");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    }
+  };
+
   const fetchUsersChats = async () => {
     try {
+      setLoadingChats(true);
       const { data } = await axios.get("/api/chat/get", {
         headers: { Authorization: token },
       });
@@ -79,6 +106,8 @@ export const AppContextProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setLoadingChats(false);
     }
   };
 
@@ -122,10 +151,12 @@ export const AppContextProvider = ({ children }) => {
     setTheme,
     createNewChat,
     loadingUser,
+    loadingChats,
     fetchUsersChats,
     token,
     setToken,
     axios,
+    renameChat,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

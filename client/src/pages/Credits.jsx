@@ -11,7 +11,6 @@ const buyCredits = async (planId, fetchUser) => {
   }
 
   try {
-    // backend se order create
     const res = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/api/credit/purchase`,
       {
@@ -31,7 +30,6 @@ const buyCredits = async (planId, fetchUser) => {
       return;
     }
 
-    // Razorpay popup options
     const options = {
       key: "rzp_test_SKhwF0mpn95N5H",
       amount: data.order.amount,
@@ -77,8 +75,35 @@ const buyCredits = async (planId, fetchUser) => {
   }
 };
 
+const IconStar = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+const IconCheckCircle = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M20 6 9 17l-5-5" />
+  </svg>
+);
+
 const Credits = () => {
-  const { fetchUser } = useAppContext();
+  const { fetchUser, user } = useAppContext();
   const [plans, setPlans] = useState([]);
   const [loading, setLoading] = useState(false);
   const { axios, token } = useAppContext();
@@ -102,30 +127,6 @@ const Credits = () => {
     }
   };
 
-  const purchasePlan = async (planId) => {
-    try {
-      const { data } = await axios.post(
-        "/api/credit/purchase",
-        {
-          planId,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
-      );
-      if (data.success) {
-        toast.success(data.message);
-        fetchUser();
-      } else {
-        toast.error(data.message || "Failed to purchase plan.");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   useEffect(() => {
     fetchPlans();
   }, []);
@@ -133,37 +134,76 @@ const Credits = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className="max-w-7xl h-screen overflow-y-scroll mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-semibold text-center mb-10 xl:mt-30 text-gray-800 dark:text-white">
-        Credit Plans
-      </h2>
-      <div className="flex flex-wrap justify-center gap-8">
-        {plans.map((plan) => (
+    <div className="max-w-7xl h-screen overflow-y-auto mx-auto px-4 sm:px-6 lg:px-8 py-12 page-enter">
+      <div className="text-center mb-12 xl:mt-20">
+        <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
+          Credit Plans
+        </h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">
+          Choose a plan that fits your needs
+        </p>
+        {user && (
+          <div className="mt-4 inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/10 px-5 py-2 rounded-full">
+            <span className="text-sm text-gray-600 dark:text-gray-300">
+              Current balance:
+            </span>
+            <span className="text-lg font-bold text-primary count-animate">
+              {user.credits}
+            </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              credits
+            </span>
+          </div>
+        )}
+      </div>
+      <div className="flex flex-wrap justify-center gap-6">
+        {plans.map((plan, i) => (
           <div
             key={plan._id}
-            className={`border border-gray-200 dark:border-[#d0b611]/30 rounded-lg shadow hover:shadow-lg transition-shadow p-6 min-w-[300px] flex flex-col ${plan._id === "pro" ? "bg-[#fdf6e3] dark:bg-[#1e1a02]" : "bg-white dark:bg-transparent"}`}
+            className={`stagger-item rounded-2xl p-7 min-w-[300px] max-w-[340px] flex flex-col transition-all hover:-translate-y-1.5 green-glow ${
+              i === 1
+                ? "bg-gradient-to-br from-primary/10 to-primary-dark/10 dark:from-primary/10 dark:to-primary-dark/10 border-2 border-primary/40 dark:border-primary/30 shadow-lg relative scale-[1.02]"
+                : "bg-white dark:bg-sidebar-dark border border-gray-200 dark:border-white/8 shadow-sm"
+            }`}
           >
+            {i === 1 && (
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-semibold px-4 py-1 rounded-full shadow-md flex items-center gap-1">
+                <IconStar /> Most Popular
+              </span>
+            )}
             <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-3">
                 {plan.name}
               </h3>
-              <p className="text-2xl font-bold text-[#d0b611] dark:text-[#e8cc30] mb-4">
+              <p className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark mb-1">
                 ₹{plan.price}
-                <span className="text-base font-normal text-gray-600 dark:text-[#d0b611]/70">
-                  {""}/ {plan.credits} credits
-                </span>
               </p>
-              <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-5">
+                {plan.credits} credits included
+              </p>
+              <ul className="space-y-3">
                 {plan.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
+                  <li
+                    key={index}
+                    className="flex items-start gap-2.5 text-sm text-gray-600 dark:text-gray-300"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center text-primary mt-0.5 shrink-0">
+                      <IconCheckCircle />
+                    </span>
+                    {feature}
+                  </li>
                 ))}
               </ul>
             </div>
             <button
               onClick={() => buyCredits(plan._id, fetchUser)}
-              className="mt-6 bg-[#d0b611] hover:bg-[#b89a0d] active:bg-[#9a8209] text-white font-medium py-2 rounded transition-colors cursor-pointer"
+              className={`ripple mt-7 font-medium py-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] text-sm ${
+                i === 1
+                  ? "bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25"
+                  : "bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 hover:bg-primary hover:text-white dark:hover:bg-primary border border-gray-200 dark:border-white/10 hover:border-transparent"
+              }`}
             >
-              Buy Now
+              Get Started
             </button>
           </div>
         ))}
