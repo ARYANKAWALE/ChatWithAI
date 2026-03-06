@@ -1,9 +1,17 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import {
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 axios.defaults.baseURL = import.meta.env.VITE_SERVER_URL;
+
+const SESSION_TIMEOUT = 2 * 24 * 60 * 60 * 1000; // 2 days in ms
 
 export const AppContext = createContext();
 
@@ -19,7 +27,77 @@ export const AppContextProvider = ({ children }) => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingChats, setLoadingChats] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+
+  // ── Session timeout: check if token has expired due to inactivity ──
+  const getInitialToken = () => {
+    const storedToken = localStorage.getItem("token");
+    if (!storedToken) return "";
+
+    const lastActivity = localStorage.getItem("lastActivity");
+    if (lastActivity && Date.now() - Number(lastActivity) > SESSION_TIMEOUT) {
+      // Inactive for more than 2 days — auto logout
+      localStorage.removeItem("token");
+      localStorage.removeItem("lastActivity");
+      setTimeout(
+        () =>
+          toast("Session expired due to inactivity. Please log in again.", {
+            icon: "⏳",
+          }),
+        500,
+      );
+      return "";
+    }
+
+    return storedToken;
+  };
+
+  const [token, setToken] = useState(getInitialToken);
+
+  // Update last activity timestamp on user interactions
+  const updateActivity = useCallback(() => {
+    if (token) {
+      localStorage.setItem("lastActivity", Date.now().toString());
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+
+    // Set initial activity
+    updateActivity();
+
+    // Listen to user interactions
+    const events = ["click", "keydown", "scroll", "touchstart"];
+    events.forEach((e) =>
+      window.addEventListener(e, updateActivity, { passive: true }),
+    );
+
+    // Periodic check every 5 minutes
+    const interval = setInterval(
+      () => {
+        const lastActivity = localStorage.getItem("lastActivity");
+        if (
+          lastActivity &&
+          Date.now() - Number(lastActivity) > SESSION_TIMEOUT
+        ) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("lastActivity");
+          setToken("");
+          setUser(null);
+          toast("Session expired due to inactivity. Please log in again.", {
+            icon: "⏳",
+          });
+          navigate("/");
+        }
+      },
+      5 * 60 * 1000,
+    );
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, updateActivity));
+      clearInterval(interval);
+    };
+  }, [token, updateActivity, navigate]);
 
   const fetchUser = async () => {
     try {
