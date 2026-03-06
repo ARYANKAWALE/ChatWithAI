@@ -39,7 +39,7 @@ const App = () => {
       )}
       {user ? (
         <div className="bg-chat-light dark:bg-chat-dark dark:text-white transition-colors duration-300">
-          <div className="flex h-screen w-screen">
+          <div className="flex h-[100dvh] w-full overflow-hidden">
             <Sidebar isMenuOpen={isMenuOpen} setIsMeuOpen={setIsMeuOpen} />
             <Routes>
               <Route path="/" element={<ChatBox />} />

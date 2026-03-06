@@ -138,8 +138,8 @@ const Message = ({
         style={{ animationDelay: `${Math.min(index * 0.03, 0.3)}s` }}
       >
         {message.role === "user" ? (
-          <div className="flex items-start justify-end my-3 gap-1.5 sm:gap-2.5 group">
-            <div className="flex flex-col gap-1.5 py-2.5 px-3 sm:px-4 bg-user-bubble dark:bg-user-bubble-dark max-w-[85%] sm:max-w-2xl rounded-2xl rounded-tr-sm shadow-sm relative">
+          <div className="flex items-start justify-end my-3 gap-1.5 sm:gap-2.5 group mb-8 sm:mb-3">
+            <div className="flex flex-col gap-1.5 py-2.5 px-3 sm:px-4 bg-user-bubble dark:bg-user-bubble-dark max-w-[85%] sm:max-w-2xl rounded-2xl rounded-tr-sm shadow-sm relative break-words">
               {isEditing ? (
                 /* ── Inline Edit Mode ── */
                 <div className="flex flex-col gap-2 min-w-[200px]">
@@ -188,7 +188,7 @@ const Message = ({
               ) : (
                 /* ── Normal Display Mode ── */
                 <>
-                  <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed whitespace-pre-wrap">
+                  <p className="text-sm text-gray-800 dark:text-gray-100 leading-relaxed whitespace-pre-wrap break-words">
                     {message.content}
                   </p>
                   <div className="flex items-center gap-2 justify-end">
@@ -204,9 +204,9 @@ const Message = ({
                 </>
               )}
 
-              {/* Action buttons on hover */}
+              {/* Action buttons */}
               {!isEditing && (
-                <div className="absolute -left-[4.5rem] sm:-left-20 top-1/2 -translate-y-1/2 hidden sm:flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                <div className="absolute -bottom-7 right-0 sm:right-auto sm:left-auto sm:-left-20 sm:top-1/2 sm:-translate-y-1/2 flex flex-row gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all z-10 w-full sm:w-auto justify-end sm:justify-start pr-1 sm:pr-0">
                   {/* Edit button — only on last user message */}
                   {isLastUserMessage && onStartEdit && (
                     <button
@@ -235,11 +235,11 @@ const Message = ({
             />
           </div>
         ) : (
-          <div className="flex items-start my-3 gap-1.5 sm:gap-2.5 group">
+          <div className="flex items-start my-3 gap-1.5 sm:gap-2.5 group mb-8 sm:mb-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white text-xs font-bold shadow-sm shrink-0">
               AI
             </div>
-            <div className="inline-flex flex-col gap-1.5 py-2.5 px-3 sm:px-4 max-w-[85%] sm:max-w-2xl bg-white dark:bg-ai-bubble-dark rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 dark:border-white/5 relative">
+            <div className="inline-flex flex-col gap-1.5 py-2.5 px-3 sm:px-4 max-w-[85%] sm:max-w-2xl bg-white dark:bg-ai-bubble-dark rounded-2xl rounded-tl-sm shadow-sm border border-gray-100 dark:border-white/5 relative break-words">
               {message.isImage ? (
                 <img
                   src={message.content}
@@ -248,7 +248,7 @@ const Message = ({
                   onClick={() => setLightboxOpen(true)}
                 />
               ) : (
-                <div className="text-sm reset-tw text-gray-800 dark:text-gray-200 leading-relaxed">
+                <div className="text-sm reset-tw text-gray-800 dark:text-gray-200 leading-relaxed overflow-x-auto w-full">
                   <Markdown>{message.content}</Markdown>
                 </div>
               )}
@@ -259,13 +259,15 @@ const Message = ({
               </div>
               {/* Copy button for text messages */}
               {!message.isImage && (
-                <button
-                  onClick={copyToClipboard}
-                  className="absolute -right-9 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all w-7 h-7 hidden sm:flex items-center justify-center rounded-lg bg-white dark:bg-ai-bubble-dark shadow-md border border-gray-100 dark:border-white/10 hover:scale-110 cursor-pointer text-gray-500 dark:text-gray-400"
-                  title="Copy"
-                >
-                  {copied ? <IconCheck /> : <IconCopy />}
-                </button>
+                <div className="absolute -bottom-7 left-0 sm:left-auto sm:right-auto sm:-right-12 sm:top-1/2 sm:-translate-y-1/2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all z-10 w-full sm:w-auto flex justify-start pl-1 sm:pl-0">
+                  <button
+                    onClick={copyToClipboard}
+                    className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-ai-bubble-dark shadow-md border border-gray-100 dark:border-white/10 hover:scale-110 cursor-pointer text-gray-500 dark:text-gray-400"
+                    title="Copy"
+                  >
+                    {copied ? <IconCheck /> : <IconCopy />}
+                  </button>
+                </div>
               )}
             </div>
           </div>

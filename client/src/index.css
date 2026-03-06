@@ -40,6 +40,29 @@
   all: revert;
 }
 
+.reset-tw pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.reset-tw code {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.reset-tw ul,
+.reset-tw ol {
+  padding-left: 1.5rem !important;
+}
+
+@media (max-width: 640px) {
+  .reset-tw ul,
+  .reset-tw ol {
+    padding-left: 1rem !important;
+  }
+}
+
 /* ─── Loading dots ─── */
 .loader div:nth-child(2) {
   animation-delay: 0.2s;
