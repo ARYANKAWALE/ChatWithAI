@@ -18,6 +18,8 @@ const ChatBox = () => {
       e.preventDefault();
       if (!prompt.trim()) return toast.error("Please enter a message");
       if (!user) return toast.error("Login to send message");
+      if (!selectedChat)
+        return toast.error("Please wait while a new session is starting...");
       setLoading(true);
       const promptCopy = prompt;
       setPrompt("");
@@ -63,6 +65,8 @@ const ChatBox = () => {
   useEffect(() => {
     if (selectedChat) {
       setMessages(selectedChat.messages);
+    } else {
+      setMessages([]);
     }
   }, [selectedChat?._id]);
 

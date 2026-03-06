@@ -59,7 +59,10 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
       />
 
       <button
-        onClick={createNewChat}
+        onClick={() => {
+          createNewChat();
+          setIsMeuOpen(false);
+        }}
         className="flex justify-center items-center w-full py-2.5 mt-6 text-white bg-[#b49f18] rounded-xl cursor-pointer hover:opacity-90 transition-opacity font-medium shadow-lg shadow-yellow-500/20"
       >
         <span className="mr-2 text-xl">+</span> New Chat

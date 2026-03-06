@@ -42,6 +42,7 @@ export const AppContextProvider = ({ children }) => {
     try {
       if (!user) return toast("Login to create a new Chat");
       navigate("/");
+      setSelectedChat(null);
       await axios.get("/api/chat/create", {
         headers: { Authorization: token },
       });
