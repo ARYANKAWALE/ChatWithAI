@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const buyCredits = async (planId, fetchUser) => {
   const token = localStorage.getItem("token");
   if (!token) {
-    alert("Please login to purchase credits. ⚠️");
+    toast.error("Please login to purchase credits. ⚠️");
     return;
   }
 
@@ -26,7 +26,7 @@ const buyCredits = async (planId, fetchUser) => {
     const data = await res.json();
 
     if (!res.ok || !data.success) {
-      alert(data.message || "Failed to initiate purchase ❌");
+      toast.error(data.message || "Failed to initiate purchase ❌");
       return;
     }
 
@@ -55,14 +55,14 @@ const buyCredits = async (planId, fetchUser) => {
           const verifyData = await verifyRes.json();
 
           if (verifyData.success) {
-            alert("Payment Successful 🎉");
+            toast.success("Payment Successful 🎉");
             fetchUser();
           } else {
-            alert(verifyData.message || "Payment verification failed ❌");
+            toast.error(verifyData.message || "Payment verification failed ❌");
           }
         } catch (error) {
           console.error(error);
-          alert("Payment verification error ❌");
+          toast.error("Payment verification error ❌");
         }
       },
     };
@@ -71,7 +71,7 @@ const buyCredits = async (planId, fetchUser) => {
     rzp.open();
   } catch (error) {
     console.error(error);
-    alert("An error occurred during purchase ❌");
+    toast.error("An error occurred during purchase ❌");
   }
 };
 
