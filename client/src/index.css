@@ -292,7 +292,7 @@
 }
 .floating-label-group input:focus + label,
 .floating-label-group input:not(:placeholder-shown) + label {
-  transform: translateY(-22px) scale(0.82);
+  transform: translateY(-10px) scale(0.82);
   color: #25d366;
   opacity: 1;
 }

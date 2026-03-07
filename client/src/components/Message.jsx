@@ -206,7 +206,7 @@ const Message = ({
 
               {/* Action buttons */}
               {!isEditing && (
-                <div className="absolute -bottom-7 right-0 sm:right-auto sm:left-auto sm:-left-20 sm:top-1/2 sm:-translate-y-1/2 flex flex-row gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all z-10 w-full sm:w-auto justify-end sm:justify-start pr-1 sm:pr-0">
+                <div className="absolute top-[calc(100%+4px)] right-0 sm:top-1/2 sm:-translate-y-1/2 sm:right-auto sm:-left-20 flex sm:flex-row gap-1 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all z-10 w-max">
                   {/* Edit button — only on last user message */}
                   {isLastUserMessage && onStartEdit && (
                     <button
@@ -259,15 +259,13 @@ const Message = ({
               </div>
               {/* Copy button for text messages */}
               {!message.isImage && (
-                <div className="absolute -bottom-7 left-0 sm:left-auto sm:right-auto sm:-right-12 sm:top-1/2 sm:-translate-y-1/2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all z-10 w-full sm:w-auto flex justify-start pl-1 sm:pl-0">
-                  <button
-                    onClick={copyToClipboard}
-                    className="w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-ai-bubble-dark shadow-md border border-gray-100 dark:border-white/10 hover:scale-110 cursor-pointer text-gray-500 dark:text-gray-400"
-                    title="Copy"
-                  >
-                    {copied ? <IconCheck /> : <IconCopy />}
-                  </button>
-                </div>
+                <button
+                  onClick={copyToClipboard}
+                  className="absolute top-[calc(100%+4px)] left-0 sm:top-1/2 sm:-translate-y-1/2 sm:left-auto sm:-right-12 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-all w-7 h-7 flex items-center justify-center rounded-lg bg-white dark:bg-ai-bubble-dark shadow-md border border-gray-100 dark:border-white/10 hover:scale-110 cursor-pointer text-gray-500 dark:text-gray-400 z-10"
+                  title="Copy"
+                >
+                  {copied ? <IconCheck /> : <IconCopy />}
+                </button>
               )}
             </div>
           </div>
