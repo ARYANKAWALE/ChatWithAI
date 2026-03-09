@@ -79,7 +79,7 @@ const Sidebar = ({ isMenuOpen, setIsMeuOpen }) => {
   return (
     <>
       <div
-        className={`sidebar-slide sticky top-0 flex flex-col h-screen min-w-[280px] w-72 p-5 bg-white dark:bg-sidebar-dark border-r border-gray-200 dark:border-white/8 max-md:fixed left-0 top-0 z-10 ${isMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"}`}
+        className={`sidebar-slide sticky top-0 flex flex-col h-[100dvh] min-w-[280px] w-72 p-5 bg-white dark:bg-sidebar-dark border-r border-gray-200 dark:border-white/8 max-md:fixed left-0 top-0 z-10 ${isMenuOpen ? "max-md:translate-x-0" : "max-md:-translate-x-full"}`}
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mb-2">

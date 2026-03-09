@@ -23,6 +23,18 @@ export const getChats = async (req, res) => {
     const userId = req.user._id;
 
     const chats = await Chat.find({ userId }).sort({ updatedAt: -1 });
+
+    if (chats.length === 0) {
+      const chatData = {
+        userId,
+        messages: [],
+        name: "New Chat",
+        userName: req.user.name,
+      };
+      const chat = await Chat.create(chatData);
+      return res.status(200).json({ success: true, chats: [chat] });
+    }
+
     res.status(200).json({ success: true, chats });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -42,7 +42,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { axios, setToken } = useAppContext();
+  const { axios, setToken, setUser } = useAppContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,6 +59,9 @@ const Login = () => {
       if (data.success) {
         localStorage.setItem("token", data.token);
         setToken(data.token);
+        if (data.user) {
+          setUser(data.user);
+        }
       } else {
         toast.error(data.message || "Authentication failed ❌");
       }

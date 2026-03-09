@@ -168,19 +168,12 @@ export const AppContextProvider = ({ children }) => {
         return;
       }
 
-      if (data.chats.length === 0) {
-        // Create a new chat and use the returned chat directly
-        const { data: createData } = await axios.get("/api/chat/create", {
-          headers: { Authorization: token },
-        });
-
-        if (createData.success && createData.chat) {
-          setChats([createData.chat]);
-          setSelectedChat(createData.chat);
-        }
-      } else {
+      if (data.chats && data.chats.length > 0) {
         setChats(data.chats);
         setSelectedChat(data.chats[0]);
+      } else {
+        setChats([]);
+        setSelectedChat(null);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
@@ -209,12 +202,17 @@ export const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (token) {
-      fetchUser();
+      // If user was just set during login/register, skip the fetch
+      if (!user) {
+        fetchUser();
+      } else {
+        setLoadingUser(false);
+      }
     } else {
       setUser(null);
       setLoadingUser(false);
     }
-  }, [token]);
+  }, [token, user]);
 
   const value = {
     navigate,

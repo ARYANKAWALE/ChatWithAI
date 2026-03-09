@@ -27,7 +27,17 @@ export const registerUser = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "User created successfully", token });
+      .json({
+        success: true,
+        message: "User created successfully",
+        token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          credits: user.credits,
+        },
+      });
   } catch (error) {
     console.log(error);
     return res
@@ -56,7 +66,17 @@ export const loginUser = async (req, res) => {
     const token = generateToken(user._id);
     return res
       .status(200)
-      .json({ success: true, message: "User LoggedIn successfully..!", token });
+      .json({
+        success: true,
+        message: "User LoggedIn successfully..!",
+        token,
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          credits: user.credits,
+        },
+      });
   } catch (error) {
     return res
       .status(500)
